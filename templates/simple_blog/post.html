@@ -1,0 +1,58 @@
+{% extends 'simple_blog/base.html' %}
+{% load staticfiles %}
+
+{% block posts %}
+    <article class="post">
+        <div class="post_header">
+            <h3 class="post_title">
+                <a href="/blog/{{ post.slug }}">{{ post.title }}</a>
+            </h3>
+            <div class="post_sub">
+                <i class="fa-time"></i>
+                    Publicado em {{ post.date_publication|date:'d/m/Y H:i' }}
+                    {% if post.date_edition %}
+                         - Atualizado em {{ post.date_edition|date:'d/m/Y H:i'}}
+                    {% endif %}
+                     - Escrito por
+                    <a href="single_post.html#post_comments">
+                <i class="fa-comments-alt"></i>{{ post.author }}</a> 
+            </div>
+        </div>
+        <div class="post_content">
+            {{ post.content }}
+        </div>
+            <h4>Categoria:</h4>
+        <div class="tab-pane fade active in" id="tags">
+            <a type="button" class="btn btn-info" href="#">{{ post.tag}}</a>
+        </div>
+    </article>
+{% endblock posts %}
+
+{% block tags_related %}
+    <aside class="widget">
+          <ul class="nav nav-tabs" id="myTab">
+               <li class="active"><a data-toggle="tab" href="#recent">Conteúdo Relacionado</a></li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+               <div id="recent" class="tab-pane fade active in">
+                    <ul class="media-list">
+                    {% for tag in tags_related %}
+                         <li class="media">
+                            <a href="/{{ tag.slug }}" class="media-photo"></a>
+                            <a href="#" class="media-date">
+                                {{ tag.date_publication|date:'d' }}
+                                <span>{{ tag.date_publication|date:'b'|upper }}</span>
+                            </a>
+                                <h5 class="media-heading">
+                                    <a href="/{{ tag.slug }}">{{ tag.title|truncatechars:50 }}</a>
+                                </h5>
+                            <p>{{ tag.content|truncatechars:100 }}</p>
+                         </li>
+                     {% endfor %}
+                    </ul>
+               </div>
+          </div>
+     </aside>
+{% endblock tags_related %}
+
+{% block pagination %}{% endblock %}
