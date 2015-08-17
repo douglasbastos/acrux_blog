@@ -28,7 +28,7 @@ class Base:
 
 class ListPosts(ListView, Base):
     model = Post
-    template_name = 'simple_blog/home.html'
+    template_name = 'acrux_blog/home.html'
     context_object_name = 'posts'
     paginate_by = 2
 
@@ -44,7 +44,7 @@ class ListPosts(ListView, Base):
 
 class DetailPost(DetailView, Base):
     model = Post
-    template_name = 'simple_blog/post.html'
+    template_name = 'acrux_blog/post.html'
     context_object_name = "post"
 
     def get_context_data(self, **kwargs):

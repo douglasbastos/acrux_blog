@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from simple_blog.models.qs_redis import Post, Tag, Author
+from acrux_blog.models.qs_redis import Post, Tag, Author
 
 class Base(TemplateView):
 
@@ -26,7 +26,7 @@ class Base(TemplateView):
         return authors_with_post
 
 class ListPosts(Base):
-    template_name = 'simple_blog/home.html'
+    template_name = 'acrux_blog/home.html'
 
     def aaa(self, request, *args, **kwargs):
         context['tags'] = self.tags
@@ -43,7 +43,7 @@ class ListPosts(Base):
 
 
 class DetailPost(Base):
-    template_name = 'simple_blog/post.html'
+    template_name = 'acrux_blog/post.html'
 
     def get_context_data(self, **kwargs):
         context = super(DetailPost, self).get_context_data(**kwargs)
