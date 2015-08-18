@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from ..models.qs_redis import Author
+from acrux_blog import qs_redis as qs
 
 import redis
 cache = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
@@ -15,7 +16,7 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         super(Tag, self).save(*args, **kwargs)
-        cache.rpush('tags:all', self.name)
+        qs.Tag.resource.rpush('tags:all', self.name)
 
 class Post(models.Model):
     title = models.CharField('Título', max_length=55)
