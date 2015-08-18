@@ -42,8 +42,8 @@ class Resource(object):
     def lpush(self, key, value):
         return self._client.rpush(key, value)
 
-    def range(self, key, init=0, end=-1):
-        return self._client.range(key, init, end)
+    def lrange(self, key, init=0, end=-1):
+        return self._client.lrange(key, init, end)
 
     def zadd(self, key, **kwargs):
         return self._client.zadd(key, **kwargs)
