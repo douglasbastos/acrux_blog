@@ -11,10 +11,10 @@ class Resource(object):
         self._client = self.connect()
 
     def _config(self):
-        self._host = settings.ACRUX_BLOG['host']
-        self._port = settings.ACRUX_BLOG['port']
-        self._pass = settings.ACRUX_BLOG['pass']
-        self._db = settings.ACRUX_BLOG['db']
+        self._host = settings.REDIS_DB['host']
+        self._port = settings.REDIS_DB['port']
+        self._pass = settings.REDIS_DB['pass']
+        self._db = settings.REDIS_DB['db']
 
     def connect(self):
         return redis.StrictRedis(host=self._host, port=self._port, db=self._db,
