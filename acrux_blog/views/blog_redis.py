@@ -1,15 +1,17 @@
-#coding: utf-8
+# coding: utf-8
 
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from acrux_blog.models.qs_redis import Post, Tag, Author
+from acrux_blog.models.qs_redis import Post, Author
+from acrux_blog.qs_redis import Tag
+
 
 class Base(TemplateView):
 
     @property
     def tags(self):
-        return Tag.all()
+        return Tag.resource.lrange('tags:all')
 
     def authors(self):
         return Author.all()
