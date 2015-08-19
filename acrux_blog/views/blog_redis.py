@@ -4,7 +4,8 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from acrux_blog.models.qs_redis import Post, Author
-from acrux_blog.qs_redis import Tag
+#Eliminar linha de cima e remove alias abaixo
+from acrux_blog.qs_redis import Tag, Author as AuthorR, Post as PostR
 
 
 class Base(TemplateView):
@@ -13,15 +14,15 @@ class Base(TemplateView):
     def tags(self):
         return Tag.resource.lrange('tags:all')
 
+    @property
     def authors(self):
-        return Author.all()
+        return AuthorR.resource.lrange('author:all')
 
     @property
     def authors_with_post(self):
         '''Retorna uma lista com todos os usuários que realizaram pelo menos um post no blog'''
         authors_with_post = []
-        authors = Author.all()
-        for username in authors:
+        for username in self.authors:
             last_name = Author.last_name(username) if Author.last_name(username) else ''
             first_name = Author.first_name(username) if Author.first_name(username) else ''
             authors_with_post.append({'last_name': last_name, 'first_name': first_name, 'username': username})

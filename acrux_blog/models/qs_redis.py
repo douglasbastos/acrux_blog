@@ -53,18 +53,7 @@ class Post:
         return cache.hmget('post:{}:slug'.format(slug), 'author')[0]
 
 
-class Tag:
-    
-    @classmethod
-    def all(self):
-        return cache.lrange('tags:all', 0, -1)
-
-
 class Author:
-
-    @classmethod
-    def all(cls):
-        return cache.lrange('author:all', 0, -1)
 
     @classmethod
     def last_name(cls, author):
