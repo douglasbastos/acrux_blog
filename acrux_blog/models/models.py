@@ -2,11 +2,10 @@
 
 from django.db import models
 from django.contrib.auth.models import User
-from ..models.qs_redis import Author
+
+from acrux_blog.models.qs_redis import Author.resource
 from acrux_blog import qs_redis as qs
 
-import redis
-cache = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
 
 class Tag(models.Model):
     name = models.CharField(max_length=55)
@@ -17,6 +16,7 @@ class Tag(models.Model):
     def save(self, *args, **kwargs):
         super(Tag, self).save(*args, **kwargs)
         qs.Tag.resource.rpush('tags:all', self.name)
+
 
 class Post(models.Model):
     title = models.CharField('Título', max_length=55)
@@ -35,22 +35,19 @@ class Post(models.Model):
     def __unicode__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        #is_edition deve ficar antes do super, depois o pk é criado mesmo não sendo edição
-        is_edition = True if self.pk else False
-        super(Post, self).save(*args, **kwargs)
-        author = self.author.username.lower()
-        tag = self.tag.name.lower()
-        author_with_post = Author.all()
-        if author not in author_with_post:
-            items_author = {'first_name': self.author.first_name,'last_name': self.author.last_name}
-            cache.rpush('author:all', author)
-            cache.hmset('author:{}:username'.format(self.author.username), items_author)
-        if not is_edition:
-            cache.rpush('post:all', self.slug)
-            cache.rpush('post:{}:tag'.format(tag), self.slug)
-            cache.rpush('post:{}:author'.format(author), self.slug)
-        items_post = {
+    def _save_author(self, author):
+        items_author = {'first_name': self.author.first_name,'last_name': self.author.last_name}
+        qs.Author.resource.rpush('author:all', author)
+        qs.Author.resource.hmset('author:{}:username'.format(self.author.username), items_author)
+
+    def _save_post(self):
+        qs.Post.resource.rpush('post:all', self.slug)
+        qs.Post.resource.rpush('post:{}:tag'.format(tag), self.slug)
+        qs.Post.resource.rpush('post:{}:author'.format(author), self.slug)
+
+    @property
+    def create_elements_post(self):
+        items = {
             'title': self.title,
             'subtitled': self.subtitled,
             'slug': self.slug,
@@ -59,5 +56,20 @@ class Post(models.Model):
             'date_edition': self.date_edition,
             'tag': self.tag,
             'author': self.author
-            }
-        cache.hmset('post:{}:slug'.format(self.slug.lower()), items_post)
+        }
+        return items
+
+    def save(self, *args, **kwargs):
+        #se tiver pk é uma edição
+        is_editing = True if self.pk else False
+        super(Post, self).save(*args, **kwargs)
+        tag = self.tag.name.lower()
+        author = self.author.username.lower()
+        import ipdb; ipdb.set_trace()
+        author_with_post = qs.Author.resource.all()
+        if author not in author_with_post:
+            self._save_author(author)
+        if not is_editing:
+            self._save_post()
+        items_post = create_elements_post
+        qs.Post.resource.hmset('post:{}:slug'.format(self.slug.lower(), items_post))
