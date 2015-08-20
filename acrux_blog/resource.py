@@ -45,6 +45,9 @@ class Resource(object):
     def lrange(self, key, init=0, end=-1):
         return self._client.lrange(key, init, end)
 
+    def hmset(self, key, value):
+        return self._client.hmset(key, value)
+
     def zadd(self, key, **kwargs):
         return self._client.zadd(key, **kwargs)
 
