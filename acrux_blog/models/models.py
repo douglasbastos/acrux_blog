@@ -3,7 +3,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from acrux_blog.models.qs_redis import Author.resource
 from acrux_blog import qs_redis as qs
 
 
