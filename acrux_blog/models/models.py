@@ -14,7 +14,7 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         super(Tag, self).save(*args, **kwargs)
-        qs.Tag.resource.rpush('tags:all', self.name)
+        qs.resource.rpush('tags:all', self.name)
 
 
 class Post(models.Model):
@@ -36,13 +36,13 @@ class Post(models.Model):
 
     def _save_author(self, author):
         items_author = {'first_name': self.author.first_name,'last_name': self.author.last_name}
-        qs.Author.resource.rpush('author:all', author)
-        qs.Author.resource.hmset('author:{}:username'.format(self.author.username), items_author)
+        qs.resource.rpush('author:all', author)
+        qs.resource.hmset('author:{}:username'.format(self.author.username), items_author)
 
     def _save_post(self):
-        qs.Post.resource.rpush('post:all', self.slug)
-        qs.Post.resource.rpush('post:{}:tag'.format(tag), self.slug)
-        qs.Post.resource.rpush('post:{}:author'.format(author), self.slug)
+        qs.resource.rpush('post:all', self.slug)
+        qs.resource.rpush('post:{}:tag'.format(tag), self.slug)
+        qs.resource.rpush('post:{}:author'.format(author), self.slug)
 
     @property
     def create_elements_post(self):
@@ -64,11 +64,10 @@ class Post(models.Model):
         super(Post, self).save(*args, **kwargs)
         tag = self.tag.name.lower()
         author = self.author.username.lower()
-        import ipdb; ipdb.set_trace()
-        author_with_post = qs.Author.resource.all()
+        author_with_post = qs.Author.all()
         if author not in author_with_post:
             self._save_author(author)
         if not is_editing:
             self._save_post()
         items_post = create_elements_post
-        qs.Post.resource.hmset('post:{}:slug'.format(self.slug.lower(), items_post))
+        qs.resource.hmset('post:{}:slug'.format(self.slug.lower(), items_post))
