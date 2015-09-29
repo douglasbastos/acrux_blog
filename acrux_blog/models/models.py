@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -11,10 +11,6 @@ class Tag(models.Model):
 
     def __unicode__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        super(Tag, self).save(*args, **kwargs)
-        qs.resource.rpush('tags:all', self.name)
 
 
 class Post(models.Model):
@@ -33,41 +29,3 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.title
-
-    def _save_author(self, author):
-        items_author = {'first_name': self.author.first_name,'last_name': self.author.last_name}
-        qs.resource.rpush('author:all', author)
-        qs.resource.hmset('author:{}:username'.format(self.author.username), items_author)
-
-    def _save_post(self):
-        qs.resource.rpush('post:all', self.slug)
-        qs.resource.rpush('post:{}:tag'.format(tag), self.slug)
-        qs.resource.rpush('post:{}:author'.format(author), self.slug)
-
-    @property
-    def create_elements_post(self):
-        items = {
-            'title': self.title,
-            'subtitled': self.subtitled,
-            'slug': self.slug,
-            'content': self.content, 
-            'date_publication': self.date_publication,
-            'date_edition': self.date_edition,
-            'tag': self.tag,
-            'author': self.author
-        }
-        return items
-
-    def save(self, *args, **kwargs):
-        #se tiver pk é uma edição
-        is_editing = True if self.pk else False
-        super(Post, self).save(*args, **kwargs)
-        tag = self.tag.name.lower()
-        author = self.author.username.lower()
-        author_with_post = qs.Author.all()
-        if author not in author_with_post:
-            self._save_author(author)
-        if not is_editing:
-            self._save_post()
-        items_post = create_elements_post
-        qs.resource.hmset('post:{}:slug'.format(self.slug.lower(), items_post))

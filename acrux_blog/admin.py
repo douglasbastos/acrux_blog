@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 
 from django.contrib import admin
 from acrux_blog.models.models import Post, Tag

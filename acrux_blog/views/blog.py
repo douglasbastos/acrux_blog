@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
@@ -51,4 +51,3 @@ class DetailPost(DetailView, Base):
         context['tags_related'] = Post.objects.filter(tag_id=context['post'].tag_id)[::-1][:5]
         context['authors'] = self.authors_with_post
         return context
-    
