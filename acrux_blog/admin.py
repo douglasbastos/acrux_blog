@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from django.contrib import admin
-from acrux_blog.models.models import Post, Tag
+from .models import Post, Tag
 
 
 class PostAdmin(admin.ModelAdmin):
