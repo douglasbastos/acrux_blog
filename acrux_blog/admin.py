@@ -3,5 +3,16 @@
 from django.contrib import admin
 from acrux_blog.models.models import Post, Tag
 
-admin.site.register(Post)
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subtitled', 'slug',
+                    'date_publication', 'date_edition',
+                    'tag', 'author')
+    search_fields = ['title']
+
+    fieldsets = ((None, {
+        'fields': ('title', 'subtitled', 'content', 'tag', 'author'),
+    }),)
+
+admin.site.register(Post, PostAdmin)
 admin.site.register(Tag)
