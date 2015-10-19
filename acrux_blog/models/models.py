@@ -3,8 +3,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from acrux_blog import qs_redis as qs
-
 
 class Tag(models.Model):
     name = models.CharField(max_length=55)
