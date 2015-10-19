@@ -49,7 +49,7 @@
                         <article class="post">
                             <div class="post_header">
                                 <h3 class="post_title">
-                                    <a href="/blog/{{ post.slug }}">{{ post.title }}</a>
+                                    <a href="/blog/post/slug/{{ post.slug }}">{{ post.title }}</a>
                                 </h3>
                                 <div class="post_sub">
                                     <i class="fa-time"></i>
@@ -58,7 +58,7 @@
                                              - Atualizado em {{ post.date_edition|date:'d/m/Y H:i'}}
                                         {% endif %}
                                          - Escrito por
-                                        <a href="single_post.html#post_comments">
+                                        <a href="/blog/post/author/{{ post.author }}">
                                     <i class="fa-comments-alt"></i>{{ post.author }}</a> 
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                             </div>
                                 <h4>Categoria:</h4>
                             <div class="tab-pane fade active in" id="tags">
-                                <a type="button" class="btn btn-info" href="#">{{ post.tag}}</a>
+                                <a type="button" class="btn btn-info" href="/blog/post/tag/{{ post.tag }}">{{ post.tag}}</a>
                             </div>
                         </article>
                         {% endfor %}
@@ -113,7 +113,7 @@
                             <h4>Categorias</h4>
                             <ul class="nav nav-pills nav-stacked">
                                 {% for tag in tags %}
-                                    <li><a href="#">{{ tag }}</a></li>
+                                    <li><a href="/blog/post/tag/{{ tag }}">{{ tag }}</a></li>
                                 {% endfor %}
                             </ul>
                         </aside>
@@ -123,7 +123,7 @@
                             <h4>Autores</h4>
                             <ul class="nav nav-pills nav-stacked">
                                 {% for author in authors %}
-                                    <li><a href="#">{{ author }}</a></li>
+                                    <li><a href="/blog/post/author/{{ author }}">{{ author }}</a></li>
                                 {% endfor %}
                             </ul>
                         </aside>
