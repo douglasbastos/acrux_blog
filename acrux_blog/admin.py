@@ -4,6 +4,13 @@ from django.contrib import admin
 from .models import Post, Tag
 
 
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    fieldsets = ((None, {
+        'fields': ('name',),
+    }),)
+
+
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'subtitled', 'slug',
                     'date_publication', 'date_edition',
@@ -15,4 +22,4 @@ class PostAdmin(admin.ModelAdmin):
     }),)
 
 admin.site.register(Post, PostAdmin)
-admin.site.register(Tag)
+admin.site.register(Tag, TagAdmin)

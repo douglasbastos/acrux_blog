@@ -5,16 +5,21 @@ from django.template.defaultfilters import slugify
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=55)
+    name = models.CharField('Categoria', max_length=55, unique=True)
+    slug = models.SlugField('Slug')
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Tag, self).save(*args, **kwargs)
 
 
 class Post(models.Model):
     title = models.CharField('Título', max_length=55, unique=True)
     subtitled = models.CharField('Subtítulo', max_length=55)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField('Slug''Slug')
     content = models.TextField('Texto')
     date_publication = models.DateTimeField('Criado em', editable=False, auto_now_add=True, null=True)
     date_edition = models.DateTimeField('Última alteração', editable=False, auto_now=True, null=True)
