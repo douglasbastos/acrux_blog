@@ -1,9 +1,7 @@
 # coding: utf-8
 
-from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
-
 from ..models.models import Post, Tag
 
 
@@ -15,7 +13,6 @@ class Base:
 
     @property
     def authors_with_post(self):
-        '''Retorna uma lista com todos os usuários que realizaram pelo menos um post no blog'''
         posts = Post.objects.select_related('author').all()
         authors_unique_id = set([post.author.pk for post in posts])
         authors_id = []
@@ -38,6 +35,20 @@ class ListPosts(ListView, Base):
         context['tags'] = self.tags
         context['authors'] = self.authors_with_post
         return context
+
+
+class ListPostsAuthor(ListPosts):
+
+    def get_queryset(self, **kwargs):
+        author = User.objects.get(username=self.kwargs['author'])
+        return Post.objects.filter(author_id=author.id).order_by('-date_publication')
+
+
+class ListPostsTag(ListPosts):
+
+    def get_queryset(self):
+        tag = Tag.objects.get(name=self.kwargs['tag'])
+        return Post.objects.filter(tag_id=tag.id).order_by('-date_publication')
 
 
 class DetailPost(DetailView, Base):
