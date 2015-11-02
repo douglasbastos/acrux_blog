@@ -25,7 +25,7 @@ class ListPosts(ListView, Base):
     model = Post
     template_name = 'acrux_blog/home.html'
     context_object_name = 'posts'
-    paginate_by = 2
+    paginate_by = 10
 
     def get_queryset(self):
         return Post.objects.order_by('-date_publication')
