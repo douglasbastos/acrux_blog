@@ -47,7 +47,7 @@ class ListPostsAuthor(ListPosts):
 class ListPostsTag(ListPosts):
 
     def get_queryset(self):
-        tag = Tag.objects.get(name=self.kwargs['tag'])
+        tag = Tag.objects.get(slug=self.kwargs['tag'])
         return Post.objects.filter(tag_id=tag.id).order_by('-date_publication')
 
 
