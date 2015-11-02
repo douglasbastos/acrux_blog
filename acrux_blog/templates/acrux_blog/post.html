@@ -29,6 +29,7 @@
 {% endblock posts %}
 
 {% block tags_related %}
+  {% if tags_related %}
     <aside class="widget">
           <ul class="nav nav-tabs" id="myTab">
                <li class="active"><a data-toggle="tab" href="#recent">Conteúdo Relacionado</a></li>
@@ -55,6 +56,8 @@
                </div>
           </div>
      </aside>
+  }
+  {% endif %}
 {% endblock tags_related %}
 
 {% block pagination %}{% endblock %}

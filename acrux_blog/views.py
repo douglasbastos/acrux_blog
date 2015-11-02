@@ -59,6 +59,7 @@ class DetailPost(DetailView, Base):
     def get_context_data(self, **kwargs):
         context = super(DetailPost, self).get_context_data(**kwargs)
         context['tags'] = self.tags
-        context['tags_related'] = Post.objects.filter(tag_id=context['post'].tag_id)[::-1][:5]
+        context['tags_related'] = Post.objects.filter(tag_id=context['post'].tag_id)\
+            .exclude(slug=self.kwargs['slug'])[::-1][:5]
         context['authors'] = self.authors_with_post
         return context
