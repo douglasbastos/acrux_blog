@@ -19,7 +19,7 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField('Título', max_length=55, unique=True)
     subtitled = models.CharField('Subtítulo', max_length=55)
-    slug = models.SlugField('Slug''Slug')
+    slug = models.SlugField('Slug')
     content = models.TextField('Texto')
     date_publication = models.DateTimeField('Criado em', editable=False, auto_now_add=True, null=True)
     date_edition = models.DateTimeField('Última alteração', editable=False, auto_now=True, null=True)
