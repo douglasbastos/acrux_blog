@@ -1,0 +1,2 @@
+recursive-include acrux_blog/templates *
+recursive-include acrux_blog/static *
